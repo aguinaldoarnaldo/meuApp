@@ -2,10 +2,10 @@
 -- Execute este script no PostgreSQL
 
 -- Criar banco de dados (execute separadamente se necessário)
--- CREATE DATABASE meuapp_db;
+-- CREATE DATABASE segurogps_db;
 
 -- Conectar ao banco
--- \c meuapp_db;
+-- \c segurogps_db;
 
 -- Tabela de usuários (assegurados)
 CREATE TABLE IF NOT EXISTS users (

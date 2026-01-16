@@ -217,6 +217,44 @@ const getHealthCard = async (req, res) => {
 
     const user = result.rows[0];
 
+    // SEED: Se não tiver apólice ou data de nascimento, atualizar com dados dummy
+    let updated = false;
+    let newApolice = user.apolice;
+    let newValidade = user.validade_cartao;
+    let newNascimento = user.data_nascimento;
+
+    if (!user.apolice) {
+        newApolice = '2025' + Math.floor(1000 + Math.random() * 9000); // 2025XXXX
+        updated = true;
+    }
+
+    if (!user.validade_cartao) {
+        const nextYear = new Date();
+        nextYear.setFullYear(nextYear.getFullYear() + 1);
+        newValidade = nextYear;
+        updated = true;
+    }
+
+    if (!user.data_nascimento) {
+        // Data aleatoria entre 1980 e 2000
+        const randomYear = 1980 + Math.floor(Math.random() * 20);
+        newNascimento = new Date(`${randomYear}-01-15`);
+        updated = true;
+    }
+
+    if (updated) {
+        await pool.query(
+            `UPDATE users 
+             SET apolice = $1, validade_cartao = $2, data_nascimento = $3
+             WHERE id = $4`,
+            [newApolice, newValidade, newNascimento, userId]
+        );
+        // Atualizar objeto local
+        user.apolice = newApolice;
+        user.validade_cartao = newValidade;
+        user.data_nascimento = newNascimento;
+    }
+
     // Formatar datas
     let dataNascimentoFormatada = null;
     if (user.data_nascimento) {
@@ -236,8 +274,8 @@ const getHealthCard = async (req, res) => {
     res.json({
       nome: user.nome,
       data_nascimento: dataNascimentoFormatada,
-      apolice: user.apolice || '20251220',
-      validade: validadeFormatada || '12/26',
+      apolice: user.apolice,
+      validade: validadeFormatada,
     });
   } catch (error) {
     console.error('Erro ao buscar cartão de saúde:', error);

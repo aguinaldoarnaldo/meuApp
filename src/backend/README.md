@@ -1,6 +1,6 @@
-# Backend - meuApp
+# Backend - SeguroGPS
 
-Backend Node.js com Express e PostgreSQL para o aplicativo meuApp.
+Backend Node.js com Express e PostgreSQL para o aplicativo SeguroGPS.
 
 ## Configuração
 
@@ -16,7 +16,7 @@ npm install
 1. Instale o PostgreSQL no seu sistema
 2. Crie um banco de dados:
 ```sql
-CREATE DATABASE meuapp_db;
+CREATE DATABASE segurogps_db;
 ```
 
 ### 3. Configurar variáveis de ambiente
@@ -26,7 +26,7 @@ Crie um arquivo `.env` na pasta `src/backend` baseado no `.env.example`:
 ```env
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=meuapp_db
+DB_NAME=segurogps_db
 DB_USER=postgres
 DB_PASSWORD=sua_senha_aqui
 

@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 // Exemplo: 'http://192.168.1.100:3000/api'
 
 const API_BASE_URL = Platform.OS === 'android'
-  ? 'http://172.20.10.3:3000/api'  // Android Emulador
+  ? 'http://192.168.0.30:3000/api'  // Android Emulador
   : 'http://localhost:3000/api'; // iOS Simulador ou Web
 
 class ApiService {
@@ -189,6 +189,13 @@ class ApiService {
   // Auditoria
   async getAuditoriaUsuario(limite = 100, offset = 0) {
     return this.request(`/auditoria/usuario?limite=${limite}&offset=${offset}`, {
+      method: 'GET',
+    });
+  }
+
+  // Faturas
+  async getInvoices() {
+    return this.request('/invoices', {
       method: 'GET',
     });
   }

@@ -11,6 +11,7 @@ const procedimentoRoutes = require('./src/routes/procedimentoRoutes');
 const qrcodeRoutes = require('./src/routes/qrcodeRoutes');
 const clinicaRoutes = require('./src/routes/clinicaRoutes');
 const auditoriaRoutes = require('./src/routes/auditoriaRoutes');
+const invoiceRoutes = require('./src/routes/invoiceRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,10 +29,11 @@ app.use('/api/procedimentos', procedimentoRoutes);
 app.use('/api/qrcode', qrcodeRoutes);
 app.use('/api/clinicas', clinicaRoutes);
 app.use('/api/auditoria', auditoriaRoutes);
+app.use('/api/invoices', invoiceRoutes);
 
 // Rota de teste
 app.get('/', (req, res) => {
-  res.json({ message: 'API do meuApp está funcionando!' });
+  res.json({ message: 'API do SeguroGPS está funcionando!' });
 });
 
 // Rota de health check

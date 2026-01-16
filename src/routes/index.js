@@ -1,21 +1,22 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "../Screens/LoginScreen";
-import WelcomeScreen from "../Screens/welcome";
-import SplashScreen from "../Screens/SplashScreen";
-import RegisterScreen from "../Screens/regitar";
-import homeScreen from "../Screens/HomeScreen";
-import NotificationsScreen from "../Screens/NotificationsScreen";
-import ProfileScreen from "../Screens/profileScreen";
-import EditProfileScreen from "../Screens/EditProfileScreen";
-import ChangePasswordScreen from "../Screens/ChangePasswordScreen";
-import PartnersScreen from "../Screens/PartnersScreen";
-import HealthScreen from "../Screens/HealthScreen";
-import HistoryScreen from "../Screens/HistoryScreen";
-import QRScannerScreen from "../Screens/QRScannerScreen";
-import ClientDetailsScreen from "../Screens/ClientDetailsScreen";
+import LoginScreen from "../Screens/Login";
+import WelcomeScreen from "../Screens/Welcome";
+import SplashScreen from "../Screens/Splash";
+import RegisterScreen from "../Screens/Register";
+import homeScreen from "../Screens/Home";
+import NotificationsScreen from "../Screens/Notifications";
+import ProfileScreen from "../Screens/Profile";
+import EditProfileScreen from "../Screens/EditProfile";
+import ChangePasswordScreen from "../Screens/ChangePassword";
+import PartnersScreen from "../Screens/Partners";
+import HealthScreen from "../Screens/Health";
+import HistoryScreen from "../Screens/History";
+import QRScannerScreen from "../Screens/QRScanner";
+import ClientDetailsScreen from "../Screens/ClientDetails";
 import ClinicaHome from "../Screens/ClinicaHome";
+import InvoicesScreen from "../Screens/Invoices";
 
 
 export default function Routs() {
@@ -57,6 +58,8 @@ export default function Routs() {
                 <Stack.Screen name="Health" component={HealthScreen} options={{ headerShown: false }} />
 
                 <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
+                
+                <Stack.Screen name="Invoices" component={InvoicesScreen} options={{ headerShown: false }} />
 
             </Stack.Navigator>
         </NavigationContainer>

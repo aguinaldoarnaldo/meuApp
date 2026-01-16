@@ -13,6 +13,40 @@ const getNotifications = async (req, res) => {
       [userId]
     );
 
+    // Seeding automático se estiver vazio
+    if (result.rows.length === 0) {
+      const sampleNotifications = [
+        { titulo: 'Bem-vindo ao SeguroGPS', descricao: 'Sua conta foi ativada com sucesso.', tipo: 'info' },
+        { titulo: 'Pagamento Confirmado', descricao: 'Sua mensalidade de Janeiro foi processada.', tipo: 'success' },
+        { titulo: 'Agende sua Consulta', descricao: 'Não se esqueça de agendar seu check-up anual.', tipo: 'warning' },
+        { titulo: 'Nova Clínica Parceira', descricao: 'A Clínica Girassol agora atende SeguroGPS.', tipo: 'info' }
+      ];
+
+      for (const notif of sampleNotifications) {
+        await pool.query(
+          'INSERT INTO notifications (user_id, titulo, descricao, tipo, created_at) VALUES ($1, $2, $3, $4, NOW())',
+          [userId, notif.titulo, notif.descricao, notif.tipo]
+        );
+      }
+
+      // Buscar novamente
+      const seededResult = await pool.query(
+        `SELECT id, titulo, descricao, tipo, lida, created_at 
+         FROM notifications 
+         WHERE user_id = $1 
+         ORDER BY created_at DESC`,
+        [userId]
+      );
+      
+      const notifications = seededResult.rows.map(notif => ({
+        ...notif,
+        created_at: new Date(notif.created_at).toLocaleDateString('pt-PT', {
+          day: '2-digit', month: '2-digit', year: 'numeric'
+        }),
+      }));
+      return res.json({ notifications });
+    }
+
     // Formatar datas
     const notifications = result.rows.map(notif => ({
       ...notif,

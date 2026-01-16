@@ -27,6 +27,32 @@ const getClinicas = async (req, res) => {
 
     const result = await pool.query(query, params);
 
+    // Seeding automático se tabela estiver vazia (apenas se não houver filtros específicos)
+    if (result.rows.length === 0 && !tipo && ativo === undefined) {
+      const count = await pool.query('SELECT COUNT(*) FROM clinicas');
+      if (parseInt(count.rows[0].count) === 0) {
+        const sampleClinicas = [
+          { nome: 'Clínica Girassol', tipo: 'clinica', endereco: 'Luanda, Morro Bento', codigo: 'CL001', telefone: '923000001' },
+          { nome: 'Clínica Sagrada Esperança', tipo: 'clinica', endereco: 'Luanda, Ilha do Cabo', codigo: 'CL002', telefone: '923000002' },
+          { nome: 'Clínica Multiperfil', tipo: 'clinica', endereco: 'Luanda, Alvalade', codigo: 'CL003', telefone: '923000003' },
+          { nome: 'Farmácia de Angola', tipo: 'farmacia', endereco: 'Luanda, Talatona', codigo: 'FA001', telefone: '923000004' },
+          { nome: 'Mecofarma', tipo: 'farmacia', endereco: 'Viana, Estrada Direta', codigo: 'FA002', telefone: '923000005' },
+          { nome: 'Centro Médico da Paz', tipo: 'clinica', endereco: 'Benguela, Centro', codigo: 'CL004', telefone: '923000006' }
+        ];
+
+        for (const item of sampleClinicas) {
+          await pool.query(
+            'INSERT INTO clinicas (nome, tipo, endereco, codigo_parceiro, telefone, ativo) VALUES ($1, $2, $3, $4, $5, TRUE)',
+            [item.nome, item.tipo, item.endereco, item.codigo, item.telefone]
+          );
+        }
+        
+        // Buscar novamente após seed
+        const seededResult = await pool.query('SELECT id, nome, tipo, endereco, telefone, email, codigo_parceiro FROM clinicas ORDER BY nome');
+        return res.json({ clinicas: seededResult.rows });
+      }
+    }
+
     res.json({ clinicas: result.rows });
   } catch (error) {
     console.error('Erro ao buscar clínicas:', error);

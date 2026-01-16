@@ -144,6 +144,26 @@ async function createTables() {
       )
     `);
 
+        // Tabela de Faturas (Mensalidades)
+        await pool.query(`
+      CREATE TABLE IF NOT EXISTS invoices (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        referencia VARCHAR(50) UNIQUE NOT NULL,
+        descricao VARCHAR(255) NOT NULL,
+        valor DECIMAL(10, 2) NOT NULL,
+        data_vencimento DATE NOT NULL,
+        data_pagamento DATE,
+        status VARCHAR(20) NOT NULL CHECK (status IN ('pendente', 'pago', 'atrasado')),
+        pdf_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Índices para invoices
+    await pool.query('CREATE INDEX IF NOT EXISTS idx_invoices_user ON invoices(user_id)');
+    await pool.query('CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status)');
+
         // Índices para melhor performance
         await pool.query('CREATE INDEX IF NOT EXISTS idx_qr_code_sessions_token ON qr_code_sessions(qr_code_token)');
         await pool.query('CREATE INDEX IF NOT EXISTS idx_qr_code_sessions_user ON qr_code_sessions(user_id)');

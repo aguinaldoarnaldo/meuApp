@@ -1,7 +1,7 @@
 {
-  "name": "meuapp-backend",
+  "name": "seguro-gps-backend",
   "version": "1.0.0",
-  "description": "Backend para o aplicativo meuApp",
+  "description": "Backend para o aplicativo SeguroGPS",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
